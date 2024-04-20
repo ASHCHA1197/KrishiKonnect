@@ -1,7 +1,34 @@
 const mongoose = require("mongoose");
-const Mandi = require("./models/Mandi"); // Assuming Mandi model is imported correctly
 
-const addMandis = async () => {
+const MandiSchema  = new mongoose.Schema({
+    market : {
+        type : String,
+        required : [true, "Market is required"]
+    },
+    crops : {
+        type : [
+            {
+                name : String,
+                price : Number
+            }
+        ]
+    }
+});
+
+
+const Mandi = mongoose.model("Mandi", MandiSchema);
+
+// mongoose.connect('mongodb://127.0.0.1:27017/krishiKonnectDb')
+//     .then(()=>{
+//         console.log("Database Connected !!");
+//     })
+//     .catch((err)=>{
+//         console.log("Cannot connect to Database");
+//         console.log(err);
+//     });
+
+const addMandis = async (req,res) => {
+    
     const mandiData = [
         {
             market: "Roorkee",
@@ -158,7 +185,6 @@ const addMandis = async () => {
     }
 };
 
-// Calling the addMandis function to populate the Mandi collection
-addMandis();
+// addMandis();
 
-module.exports = Mandi; // Export Mandi model if needed elsewhere
+module.exports = Mandi; 

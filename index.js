@@ -30,6 +30,7 @@ const User = require("./models/User");
 const Post = require("./models/Post");
 const Comment = require("./models/Comment");
 const Policy = require("./models/Policy");
+const Mandi = require("./models/Mandi");
 const multer = require("multer");
 const upload = multer({storage});
 const mongoose = require("mongoose");
@@ -113,7 +114,7 @@ app.get('/krishiKonnect/logout', (req,res)=>{
 
 app.get('/krishiKonnect/krishiGram', wrapAsync(async (req,res)=>{
     const posts = await Post.find({});
-    res.render('krishiGram/index', {posts});
+    res.render('krishiGram/index', {posts, mobile : req.session.mobile});
 }))
 
 app.get('/krishiKonnect/krishiGram/new', (req,res)=>{
@@ -186,14 +187,29 @@ app.get('/krishiKonnect/subsidies', wrapAsync(async (req,res)=>{
 
 
 app.get('/krishiKonnect/eMandi', (req,res)=>{
-    const market=req.body.market;
-    const crop=req.body.crop;
-    
     res.render('emandi/index');
 })
 
+app.post('/krishiKonnect/eMandi',wrapAsync( async (req,res)=>{
+    const market=req.body.market;
+    const cp=req.body.crop;
+    const milgya=await Mandi.findOne({market : market});
+    if(!milgya){
+        req.flash('success','Opps! Crop not found!')
+        return res.redirect('/krishiKonnect/eMandi');
+    }
+    else{
+        for(let crop of milgya.crops){
+            if(crop.name==cp){
+                return res.render("emandi/view",{market , crop});
+            }
+        }
+        req.flash('success','Opps! Crop not found!')
+        return res.redirect('/krishiKonnect/eMandi');
+    }
+}))
+
 app.get('/krishiKonnect/eMandi/view', wrapAsync(async (req, res)=>{
-    
 
     res.render('emandi/view',{});
 }))

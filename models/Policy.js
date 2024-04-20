@@ -1,4 +1,13 @@
 const mongoose = require("mongoose");
+// mongoose.connect('mongodb://127.0.0.1:27017/krishiKonnectDb')
+//     .then(()=>{
+//         console.log("Database Connected !!");
+//     })
+//     .catch((err)=>{
+//         console.log("Cannot connect to Database");
+//         console.log(err);
+//     });
+
 
 const PolicySchema  = new mongoose.Schema({
     name : {
@@ -130,7 +139,7 @@ const addPolicies = async(req,res)=>{
     ])
 }
 
-addPolicies();
+// addPolicies();
 
 module.exports = Policy;
 
