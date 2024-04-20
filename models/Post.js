@@ -23,6 +23,8 @@ const PostSchema  = new mongoose.Schema({
         type: Number,
         default: 0
     },
+    likedby : [String],
+
     comments : [
         {
             type : mongoose.Schema.Types.ObjectId,

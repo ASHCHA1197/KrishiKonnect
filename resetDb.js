@@ -25,6 +25,6 @@ const resetUsers  = async( req, res) => {
 
 
 
-// resetPosts();
+resetPosts();
 // resetComments();
 // resetUsers();

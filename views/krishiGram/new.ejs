@@ -2,16 +2,101 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New Post</title>
+    <title>New Post - Instagram Style</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <style>
+        /* Custom CSS for Instagram style */
+        body {
+            background-color: #fafafa;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding-top: 20px;
+        }
+        .form-group label {
+            font-weight: bold;
+            color: #262626;
+        }
+        .form-control {
+            border: 1px solid #dbdbdb;
+            border-radius: 4px;
+            padding: 8px;
+            margin-bottom: 15px;
+        }
+        .form-control:focus {
+            border-color: #3897f0;
+            box-shadow: none;
+        }
+        .btn-primary {
+            background-color: #3897f0;
+            border: none;
+            padding: 10px 20px;
+        }
+        .btn-primary:hover {
+            background-color: #2a77c2;
+        }
+        #preview {
+            max-width: 100%;
+            margin-top: 20px;
+        }
+        #image-preview {
+            max-width: 100%;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
-    <form action="/krishiKonnect/krishiGram/new" method = "POST" enctype="multipart/form-data">
-        <input type="text" id = "title" name = "title" placeholder="title">
-        <input type="text" id = "body" name = "body" placeholder="body">
-        <input type="file" id = "media" name = "media" placeholder="Images">
-        <button>Submit</button>
-    </form>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <h1 class="text-center">Add New Post</h1>
+            <form action="/krishiKonnect/krishiGram/new" method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <input type="text" class="form-control" id="title" name="title" placeholder="Title">
+                </div>
+                <div class="form-group">
+                    <label for="body">Caption</label>
+                    <textarea class="form-control" id="body" name="body" rows="3" placeholder="Write a caption..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="media">Upload Image</label>
+                    <input type="file" class="form-control-file" id="media" name="media">
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Share</button>
+            </form>
+            <div id="preview" class="text-center">
+                <!-- Preview section for uploaded image -->
+                <img id="image-preview" src="#" alt="Image Preview" style="display: none;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script>
+    // JavaScript for previewing image before upload
+    document.getElementById('media').addEventListener('change', function(event) {
+        var preview = document.getElementById('image-preview');
+        var file = event.target.files[0];
+        var reader = new FileReader();
+
+        reader.onloadend = function() {
+            preview.src = reader.result;
+            preview.style.display = 'block';
+        }
+
+        if (file) {
+            reader.readAsDataURL(file);
+        } else {
+            preview.src = '';
+            preview.style.display = 'none';
+        }
+    });
+</script>
 </body>
 </html>

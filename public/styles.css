@@ -69,9 +69,23 @@ body {
 #nav h4 {
   text-transform: uppercase;
   font-weight: 500;
-  cursor: pointer;
+  /* cursor: pointer; */
   font-size: 1.15vw;
 }
+#nav a {
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 20px;
+}
+
+#nav a:hover {
+  background: #fff;
+  color: #000;
+  border: 2px solid white; /* Add border around the link */
+  padding: 10px 5px;
+  border-radius: 15px;
+}
+
 video {
   height: 100%;
   width: 100%;
@@ -258,7 +272,7 @@ video {
   width: 100%;
   background-color: #95c11e;
   padding: 30px;
-  padding-top: 160px;
+  padding-top: 50px;
   opacity: 0;
   transition: all ease 0.6s;
 }
@@ -278,7 +292,7 @@ video {
   opacity: 1;
 }
 .card:hover {
-  transform: rotate3d(-1, 1, 0, 20deg);
+  transform: rotate3d(1, 1, 0, 20deg);
 }
 
 #green-div {
@@ -381,7 +395,7 @@ video {
 #page4 h1 {
   font-size: 6.4vw;
   position: absolute;
-  top: -15%;
+  top: -35%;
   font-weight: 900;
   font-family: gilroy;
   color: #000;
@@ -417,14 +431,16 @@ video {
   /* background-color: red; */
 }
 #f2 h3 {
-  font-size: 1.6vw;
+  font-size: 1.2vw;
   white-space: nowrap;
   text-transform: uppercase;
   color: #000;
   font-weight: 900;
   margin-bottom: 8px;
 }
-
+#f3 a {
+  text-decoration: none;
+}
 #f3 h3 {
   font-size: 1.6vw;
   white-space: nowrap;
@@ -434,11 +450,30 @@ video {
   margin-bottom: 8px;
 }
 #f4 h4 {
-  font-size: 1vw;
+  font-size: 1.2vw;
   white-space: nowrap;
   text-transform: uppercase;
   color: #000;
   font-weight: 600;
   line-height: 20px;
   margin-bottom: 8px;
+}
+/* abhi at 1.20aam */
+/* #loginContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+button {
+  padding: 10px 20px;
+  margin: 0 10px;
+  font-size: 16px;
+  cursor: pointer;
+} */
+
+/* Style for active button */
+.active {
+  background-color: #007bff;
+  color: white;
 }

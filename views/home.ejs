@@ -3,7 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Kissan Konnect</title>
+    
+     <title>Kissan Konnect</title>
+  <link rel="icon" type="image/x-icon" href="logo.png">
     <link
       rel="shortcut icon"
       href="https://sidcupfamilygolf.com/wp-content/themes/puttosaurus/favicons/favicon-32x32.png"
@@ -18,14 +20,34 @@
 
   <body>
     <div id="nav">
-      <img src="" alt="LOGO" />
-      <h4>HOME</h4>
-      <h4>NEWS UPDATES</h4>
-      <h4>E-MANDI</h4>
-      <h4>AGRO STORES</h4>
-      <h4><a href="/krishiKonnect/krishiGram">KRISHI GRAM</a></h4>
-      <button></button>
-      <a href="/krishiKonnect/login" >LOGIN</a>
+      <img src="logo.png" alt="LOGO" />
+      <div id="homenav" class="navbtn">
+        <a href="/krishiKonnect">HOME</a>
+      </div>
+      <div id="newsnav" class="navbtn">
+        <a href="/krishiKonnect/subsidies">SUBSIDIES</a>
+      </div>
+      <div id="emandinav" class="navbtn">
+        <a href="/krishiKonnect/eMandi">E-MANDI</a>
+      </div>
+      <div id="agronav" class="navbtn">
+        <a href="#">AGRO STORES</a>
+      </div>
+      <div id="krishinav" class="navbtn">
+        <a href="/krishiKonnect/krishiGram">KRISHI GRAM</a>
+      </div>
+      <div id="cropdisnav" class="navbtn">
+        <a href="#">CROP CARE</a>
+      </div class="loginkaro"> 
+      
+      <%if(mobile==null){%>
+        <a href="/krishiKonnect/login" >LOGIN</a>
+        <%}else{%>
+        <a href="/krishiKonnect/logout" >LOGOUT</a>
+        <%}%>
+      </div>
+
+
     </div>
     <div id="cursor"></div>
     <div id="cursor-blur"></div>
@@ -51,15 +73,16 @@
       <div id="page2">
         <div id="scroller">
           <div id="scroller-in">
-            <h4>HOME</h4>
-            <h4>NEWS UPDATES</h4>
-            <h4>E-MANDI</h4>
-            <h4>AGRO STORES</h4>
-            <h4>KRISHI GRAM</h4>
+            <h4>HOME&nbsp;&nbsp;</h4>
+            <h4>SUBSIDIES&nbsp;&nbsp;</h4>
+            <h4>E-MANDI&nbsp;&nbsp;</h4>
+            <h4>AGRO STORES&nbsp;&nbsp;</h4>
+            <h4>KRISHI GRAM&nbsp;&nbsp;</h4>
+            <h4>CROP CARE&nbsp;&nbsp;</h4>
           </div>
           <div id="scroller-in">
             <h4>HOME</h4>
-            <h4>NEWS UPDATES</h4>
+            <h4>SUBSIDIES</h4>
 
             <h4>E-MANDI</h4>
             <h4>AGRO STORES</h4>
@@ -92,11 +115,9 @@
           <div class="card" id="card1">
             <div class="overlay">
               <!-- <img src="https://images.unsplash.com/photo-1508921340878-ba53e1f016ec?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="card1111"> -->
-              <h4>News Update</h4>
+              <h4>SUBSIDIES</h4>
               <p>
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nulla
-                quam molestias magni cupiditate architecto et enim quas facere
-                ipsum tempora?
+               Stay informed about the latest government plans and subsidies applicable to you through the Krishi Konnect portal. Ensure you never miss out on valuable opportunities to optimize your agricultural endeavors.
               </p>
             </div>
           </div>
@@ -115,9 +136,7 @@
             <div class="overlay">
               <h4>Agro Stores</h4>
               <p>
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nulla
-                quam molestias magni cupiditate architecto et enim quas facere
-                ipsum tempora?
+                Access reliable agricultural inputs through government-certified stores, ensuring product authenticity and quality assurance. Conveniently locate nearby stores for hassle-free procurement and strategic planning based on local demand patterns.
               </p>
             </div>
           </div>
@@ -138,10 +157,7 @@
       </div>
       <div id="page3">
         <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos
-          ipsa ad optio, voluptatum nulla eius dolorem assumenda quidem earum
-          reiciendis commodi, nesciunt molestias exercitationem voluptates
-          tempore. Cum laboriosam repellendus ut!
+          Agriculture sustains life, nourishing both body and soul. It's the heartbeat of civilization, connecting past, present, and future through the simple act of growing food.
         </p>
         <img
           id="colon1"
@@ -179,31 +195,30 @@
         </div>
       </div>
       <div id="footer">
-        <img src="" alt="apna logo" />
+        <img src="" alt="" />
         <div id="f1">
-          <img src="our LOGO" alt="" />
+          <img src="fulllogo.png" alt="sorry" />
         </div>
         <div id="f2">
-          <h3>MANY</h3>
-          <h3>MANY</h3>
-          <h3>MANY</h3>
-          <h3>MANY</h3>
+          <h3>Subsidies</h3>
+          <h3>E-Mandi</h3>
+          <h3>Agro Stores</h3>
+          <h3>Krishi Gram</h3>
+          <h3>Crop Care</h3>
         </div>
         <div id="f3">
-          <!-- <h3>coffee shop</h3>
-          <h3>LEAGUES</h3>
-          <h3>Contact us</h3> -->
-          <h3>Contact us</h3>
-          <h3>Contact us</h3>
-          <h3>our</h3>
-          <h3>Contact us</h3>
+          <h2>Our Partners</h2><br>
+          <a href="https://agriwelfare.gov.in/" target="_blank">Department of Agriculture and Farmers Welfare</a>
+          <br><br><a href="https://agriculture.up.gov.in/" target="_blank">Department of Agriculture, U.P.</a>
+          
         </div>
         <div id="f4">
           <h4>
-            Team Conquerors <br />
-            JIIT <br />
-            TEL: 982989211 <br />
-            GET DIRECTIONS <br />
+            Team Conquerors <br /><br/>
+            Jaypee Institue of Information Technology <br />
+            Noida<br/>
+            
+            
           </h4>
         </div>
       </div>

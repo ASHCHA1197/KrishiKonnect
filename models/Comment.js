@@ -11,10 +11,6 @@ const CommentSchema  = new mongoose.Schema({
     body :  {
         type: String,
         required : [true, 'Body is required']
-    },
-    likes : {
-        type: Number,
-        default: 0
     }
 });
 

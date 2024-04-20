@@ -1,3 +1,22 @@
+if(process.env.NODE_ENV !== "production"){
+    require("dotenv").config();
+}
+
+const cloudinary = require('cloudinary').v2;
+const{ CloudinaryStorage } = require('multer-storage-cloudinary');
+
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key : process.env.CLOUDINARY_KEY,
+    api_secret : process.env.CLOUDINARY_SECRET
+})
+
+const storage = new CloudinaryStorage({
+    cloudinary,
+    folder : 'krishiKonnect',
+    allowedFormats : ['jpeg', 'png', 'jpg']
+});
+
 const express = require("express");
 const app = express();
 const path = require("path");
@@ -10,8 +29,9 @@ const bcrypt = require("bcrypt");
 const User = require("./models/User");
 const Post = require("./models/Post");
 const Comment = require("./models/Comment");
+const Policy = require("./models/Policy");
 const multer = require("multer");
-const upload = multer({dest : 'uploads/'});
+const upload = multer({storage});
 const mongoose = require("mongoose");
 
 mongoose.connect('mongodb://127.0.0.1:27017/krishiKonnectDb')
@@ -46,7 +66,7 @@ app.use((req, res, next) => {
 });
 
 app.get('/krishiKonnect', (req,res)=>{
-    res.render('home');
+    res.render('home', {mobile : req.session.mobile});
 })
 
 app.get("/krishiKonnect/login", (req,res)=>{
@@ -87,7 +107,7 @@ app.post('/krishiKonnect/signup', wrapAsync(async (req, res)=>{
 
 app.get('/krishiKonnect/logout', (req,res)=>{
     req.session.destroy();
-    res.redirect("home");
+    res.redirect("/krishiKonnect");
 })
 
 
@@ -102,13 +122,16 @@ app.get('/krishiKonnect/krishiGram/new', (req,res)=>{
 
 app.post('/krishiKonnect/krishiGram/new', upload.single('media'), wrapAsync(async (req,res)=>{
     const {title , body} = req.body;
-    const {media} = req.file;
+    let media = "";
+    if(req.file){
+        media = req.file.path;
+    }
     if(!req.session.mobile){
         req.flash('success','Login First');
         return res.redirect('/krishiKonnect/login');
     }
     const user = await User.findOne({mobile : req.session.mobile});
-    const post = new Post({title , body , media, likes : 0, name : user.name, mobile : user.mobile });
+    const post = new Post({title , body , media, likes : 0, likedby : [], name : user.name, mobile : user.mobile });
     await post.save();
     res.redirect("/krishiKonnect/krishiGram");
 }))
@@ -117,11 +140,63 @@ app.post('/krishiKonnect/krishiGram/new', upload.single('media'), wrapAsync(asyn
 app.get('/krishiKonnect/krishiGram/:id', wrapAsync(async(req, res)=>{
     const id = req.params.id;
     const post = await Post.findById(id);
-    console.log(post);
     res.render("krishiGram/view", {post});
 }))
 
+app.get('/krishiKonnect/krishiGram/:id/like', wrapAsync(async(req,res)=>{
+    const id = req.params.id;
+    const post = await Post.findById(id);
 
+    if(req.session.mobile==null){
+        req.flash('success', 'login first');
+        return res.redirect('/krishiKonnect/login');
+    }
+
+    if(!post.likedby.includes(req.session.mobile)){
+        post.likedby.push(req.session.mobile);
+        post.likes += 1;
+        await post.save();
+        res.render('krishiGram/view',{post});
+    }
+    else{
+        const index = post.likedby.indexOf(req.session.mobile);
+        post.likedby.splice(index, 1);
+        post.likes -= 1;
+        await post.save();
+        res.render('krishiGram/view',{post});
+    }
+}))
+
+
+
+app.get('/krishiKonnect/subsidies', wrapAsync(async (req,res)=>{
+    if(!req.session.mobile){
+        req.flash('success','Login First');
+        return res.redirect("/krishiKonnect/login");
+    }
+    const user = await User.findOne({mobile : req.session.mobile});
+    const {age , income, land} = user;
+    const policies = await Policy.find({$and : [{age : {$lte : age}},{land : {$gte : land}},{income : {$gte : income}}]});
+    res.render("subsidies/index", {policies});
+}))
+
+
+
+
+
+
+app.get('/krishiKonnect/eMandi', (req,res)=>{
+    const market=req.body.market;
+    const crop=req.body.crop;
+    
+    res.render('emandi/index');
+})
+
+app.get('/krishiKonnect/eMandi/view', wrapAsync(async (req, res)=>{
+    
+
+    res.render('emandi/view',{});
+}))
 
 app.use((err,req,res,next)=>{
     const {status = 500, message = "Oops... Something went wrong"} = err;
