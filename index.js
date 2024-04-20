@@ -10,6 +10,8 @@ const bcrypt = require("bcrypt");
 const User = require("./models/User");
 const Post = require("./models/Post");
 const Comment = require("./models/Comment");
+const multer = require("multer");
+const upload = multer({dest : 'uploads/'});
 const mongoose = require("mongoose");
 
 mongoose.connect('mongodb://127.0.0.1:27017/krishiKonnectDb')
@@ -83,12 +85,41 @@ app.post('/krishiKonnect/signup', wrapAsync(async (req, res)=>{
     res.redirect('/krishiKonnect');
 }))
 
-app.post('/krishiKonnect/logout', (req,res)=>{
+app.get('/krishiKonnect/logout', (req,res)=>{
     req.session.destroy();
     res.redirect("home");
 })
 
 
+app.get('/krishiKonnect/krishiGram', wrapAsync(async (req,res)=>{
+    const posts = await Post.find({});
+    res.render('krishiGram/index', {posts});
+}))
+
+app.get('/krishiKonnect/krishiGram/new', (req,res)=>{
+    res.render('krishiGram/new')
+})
+
+app.post('/krishiKonnect/krishiGram/new', upload.single('media'), wrapAsync(async (req,res)=>{
+    const {title , body} = req.body;
+    const {media} = req.file;
+    if(!req.session.mobile){
+        req.flash('success','Login First');
+        return res.redirect('/krishiKonnect/login');
+    }
+    const user = await User.findOne({mobile : req.session.mobile});
+    const post = new Post({title , body , media, likes : 0, name : user.name, mobile : user.mobile });
+    await post.save();
+    res.redirect("/krishiKonnect/krishiGram");
+}))
+
+
+app.get('/krishiKonnect/krishiGram/:id', wrapAsync(async(req, res)=>{
+    const id = req.params.id;
+    const post = await Post.findById(id);
+    console.log(post);
+    res.render("krishiGram/view", {post});
+}))
 
 
 

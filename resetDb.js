@@ -13,11 +13,18 @@ mongoose.connect('mongodb://127.0.0.1:27017/krishiKonnectDb')
         console.log(err);
     });
 
-const reset  = async( req, res) => {
+const resetComments  = async( req, res) => {
     await Comment.deleteMany({});
+}
+const resetPosts  = async( req, res) => {
     await Post.deleteMany({});
+}
+const resetUsers  = async( req, res) => {
     await User.deleteMany({});
 }
 
 
-reset();
+
+// resetPosts();
+// resetComments();
+// resetUsers();
