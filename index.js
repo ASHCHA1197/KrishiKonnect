@@ -51,34 +51,37 @@ app.get("/krishiKonnect/login", (req,res)=>{
     res.render('login');
 })
 
-app.post('/krishiKonnect/login', async (req,res) => {
+app.post('/krishiKonnect/login', wrapAsync(async (req,res) => {
     const {mobile , password } = req.body;
     const user = await User.findOne({mobile});
     if(!user){
-        return res.redirect('login');
+        req.flash('success','Wrong phone no or pass')
+        return res.redirect('/krishiKonnect/login');
     }
     const valid = await bcrypt.compare(password,user.password);
     if(valid) {
         req.session.mobile = mobile;
-        res.redirect("home");
+        req.flash('success','Logged in Successfully!!')
+        res.redirect("/krishiKonnect");
     }
     else{
-        res.redirect("login");
+        req.flash('success','Wrong phone no or pass')
+        res.redirect('/krishiKonnect/login');
     }
-})
+}))
 
 app.get("/krishiKonnect/signup",  (req,res)=>{
     res.render('signup');
 })
 
-app.post('/krishiKonnect/signup', async (req, res)=>{
+app.post('/krishiKonnect/signup', wrapAsync(async (req, res)=>{
     const {password, age , name , mobile, income, land, email, address, photo} = req.body;
-    const hash = bcrypt.hash(password,12);
-    const user = await new User({password : hash, age, name, mobile, income, land, email, address,photo});
+    const hash = await bcrypt.hash(password,12);
+    const user = new User({password : hash, age, name, mobile, income, land, email, address, photo});
     await user.save();
     req.session.mobile = mobile;
-    res.redirect('home');
-})
+    res.redirect('/krishiKonnect');
+}))
 
 app.post('/krishiKonnect/logout', (req,res)=>{
     req.session.destroy();
@@ -86,14 +89,12 @@ app.post('/krishiKonnect/logout', (req,res)=>{
 })
 
 
-app.get('/krishiKonnect/krishiGram', (req,res)=>{
-    
-})
+
 
 
 app.use((err,req,res,next)=>{
-    const {status = 500, msg = "Oops... Something went wrong"} = err;
-    res.status(status).send(msg);
+    const {status = 500, message = "Oops... Something went wrong"} = err;
+    res.status(status).send(message);
 })
 
 app.listen(3000, () => {
