@@ -31,6 +31,7 @@ const Post = require("./models/Post");
 const Comment = require("./models/Comment");
 const Policy = require("./models/Policy");
 const Mandi = require("./models/Mandi");
+const Store = require("./models/Store");
 const multer = require("multer");
 const upload = multer({storage});
 const mongoose = require("mongoose");
@@ -187,7 +188,7 @@ app.get('/krishiKonnect/subsidies', wrapAsync(async (req,res)=>{
 
 
 app.get('/krishiKonnect/eMandi', (req,res)=>{
-    res.render('emandi/index');
+    res.render('eMandi/index');
 })
 
 app.post('/krishiKonnect/eMandi',wrapAsync( async (req,res)=>{
@@ -201,7 +202,7 @@ app.post('/krishiKonnect/eMandi',wrapAsync( async (req,res)=>{
     else{
         for(let crop of milgya.crops){
             if(crop.name==cp){
-                return res.render("emandi/view",{market , crop});
+                return res.render("eMandi/view",{market , crop});
             }
         }
         req.flash('success','Opps! Crop not found!')
@@ -209,10 +210,23 @@ app.post('/krishiKonnect/eMandi',wrapAsync( async (req,res)=>{
     }
 }))
 
-app.get('/krishiKonnect/eMandi/view', wrapAsync(async (req, res)=>{
 
-    res.render('emandi/view',{});
+
+app.get('/krishiKonnect/agroStore', (req,res)=>{
+    res.render('agroStore/index');
+})
+
+
+
+app.get('/krishiKonnect/profile', wrapAsync(async (req,res)=>{
+    if(!req.session.mobile){
+        req.flash("success","Log in first !!!");
+        return res.redirect('/krishiKonnect/login');
+    }
+    const user = await User.findOne({mobile : req.session.mobile});
+    res.render('profile', {user});
 }))
+
 
 app.use((err,req,res,next)=>{
     const {status = 500, message = "Oops... Something went wrong"} = err;

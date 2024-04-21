@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places"></script>
+  <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBbQBmr0uFnfJr2SSkOV7fYJPp4tuNhMyc&libraries=places&callback=initMap"
+    async defer></script>
+
+
+  <style>
+    .cards {
+      margin: 10%;
+      padding: 25px;
+
+    }
+
+    .gallery {
+      width: 100%;
+      height: 180px;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      padding: 0;
+      margin: 0;
+      overflow-x: hidden;
+    }
+
+    .gallery img {
+      size-adjust: auto;
+    }
+
+    .cards {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      overflow-y: scroll;
+    }
+
+    .card {
+      padding: 20px;
+      margin: 10%;
+      background: linear-gradient(to right, #a2ab8a, #dfe4df, #95c11e);
+
+    }
+
+    @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800&family=Tilt+Neon&display=swap");
+
+    @property --gradient-angle {
+      syntax: "<angle>";
+      initial-value: 0deg;
+      inherits: false;
+    }
+
+    * {
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+      font-family: "Nunito", sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    img {
+      width: 100%;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    /* SECTION - HOME */
+
+    .home {
+      display: grid;
+      grid-template-columns: 45% 50%;
+      place-items: center;
+      gap: 50px;
+      background: rgb(67, 69, 112);
+      background: radial-gradient(circle,
+          rgba(67, 69, 112, 1) 3%,
+          rgba(35, 36, 57, 1) 60%);
+      overflow: hidden;
+      padding: 130px 80px;
+    }
+
+    .description {
+      color: #fff;
+      padding: 0 50px;
+    }
+
+    .description>h1 {
+      font-family: "Tilt Neon", sans-serif;
+      font-size: clamp(2.3rem, 5vw, 4rem);
+      line-height: 1.1;
+      margin-bottom: 30px;
+    }
+
+    .gradient-text {
+      font-family: "Tilt Neon", sans-serif;
+      background-image: linear-gradient(90deg,
+          rgb(118, 167, 63) 0%,
+          rgb(51, 143, 118) 40%,
+          rgb(55, 141, 167) 50%,
+          rgb(117, 152, 242) 70%,
+          rgb(144, 118, 236) 100%);
+      color: transparent;
+      background-size: contain;
+      background-clip: text;
+      -webkit-background-clip: text;
+    }
+
+    .description>p {
+      font-family: "Nunito", sans-serif;
+      font-size: 1.2rem;
+      line-height: 1.5;
+      margin-bottom: 30px;
+    }
+
+    #form {
+      position: relative;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+    }
+
+    input {
+      padding-inline-end: 10px;
+      padding-inline-start: 10px;
+      background-color: transparent;
+      outline: transparent;
+      border: 0;
+      border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+      margin-right: 10px;
+      transition: all 0.3s ease-in;
+      -webkit-transition: all 0.3s ease-in;
+    }
+
+    input::placeholder {
+      color: rgb(117, 152, 242);
+      opacity: 0.5;
+      font-weight: 500;
+    }
+
+    input[type="email"] {
+      color: rgba(255, 255, 255, 0.7);
+      font-weight: 500;
+      font-size: 1rem;
+    }
+
+    input[type="email"]:focus {
+      border: transparent;
+      outline: 2px dotted rgb(117, 152, 242);
+      outline-offset: -3px;
+    }
+
+    .btn {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 3px;
+      max-width: max-content;
+      background: linear-gradient(90deg,
+          rgb(118, 167, 63) 0%,
+          rgb(51, 143, 118) 40%,
+          rgb(55, 141, 167) 50%,
+          rgb(117, 152, 242) 70%,
+          rgb(144, 118, 236) 100%);
+      background-size: 200%;
+      background-position: left;
+      color: #fff;
+      font-size: 1.2rem;
+      font-weight: 500;
+      border: 0;
+      padding: 12px 16px;
+      border-radius: 5px;
+      box-shadow: 0 6px 8px rgba(0, 0, 0, 0.5),
+        inset 0px 2px 2px rgba(255, 255, 255, 0.2);
+      cursor: pointer;
+      transition: all 0.3s ease-in;
+    }
+
+    .btn:is(:hover, :focus-visible) {
+      background-position: right;
+    }
+
+    .users-color-container {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .item {
+      max-width: 200px;
+      aspect-ratio: 1/1;
+      box-shadow: 0 8px 8px rgba(0, 0, 0, 0.5),
+        inset 0px 2px 2px rgba(255, 255, 255, 0.2);
+      animation: fadeIn 0.5s linear 1 forwards;
+      animation-delay: calc(0.2s * var(--i));
+      opacity: 0;
+    }
+
+    .item:nth-child(1) {
+      background-color: #67d7e1;
+      border-radius: 50% 50% 0 50%;
+    }
+
+    .item:nth-child(2) {
+      border-radius: 50% 50% 0 0;
+    }
+
+    .item:nth-child(3) {
+      background-color: #6cc164;
+      border-radius: 50%;
+    }
+
+    .item:nth-child(4) {
+      border-radius: 0 0 0 50%;
+    }
+
+    .item:nth-child(5) {
+      border-radius: 0 50% 50% 0;
+    }
+
+    .item:nth-child(6) {
+      background-color: #8071a8;
+      border-radius: 0 50% 50% 50%;
+    }
+
+    .item:nth-child(7) {
+      border-radius: 50% 50% 0 50%;
+    }
+
+    .item:nth-child(8) {
+      background-color: #fe7519;
+      border-radius: 50% 0 0 50%;
+    }
+
+    .item:nth-child(9) {
+      background-color: #f5bec3;
+      border-radius: 0 50% 50% 0;
+    }
+
+    .item:nth-child(10) {
+      border-radius: 50%;
+    }
+
+    .item:nth-child(11) {
+      background-color: #fcd659;
+      border-radius: 50% 0 50% 50%;
+    }
+
+    .item:nth-child(12) {
+      border-radius: 50% 0 0 0;
+    }
+
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+        transform: scale(0);
+      }
+
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    /* SECTION - CARD CONTAINER */
+
+    .card-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 30px;
+      width: 100%;
+      min-height: 100vh;
+      background: rgb(67, 69, 112);
+      background: radial-gradient(circle,
+          rgba(67, 69, 112, 1) 3%,
+          rgba(35, 36, 57, 1) 60%);
+      overflow: hidden;
+      padding: 90px 50px;
+    }
+
+    .card {
+      max-width: 300px;
+      aspect-ratio: 3/5;
+      border-radius: 15px;
+      margin: 20px;
+      overflow: hidden;
+      border-top: 1px solid rgba(255, 255, 255, 0.7);
+      border-left: 1px solid rgba(255, 255, 255, 0.7);
+      box-shadow: 0 8px 10px rgba(0, 0, 0, 0.5),
+        inset 0px 2px 2px rgba(255, 255, 255, 0.2);
+      cursor: grab;
+    }
+
+    .content {
+      position: relative;
+      display: grid;
+      place-items: center;
+      grid-template-columns: 1fr;
+      grid-template-rows: repeat(10, 1fr);
+      padding: 20px;
+      background: rgba(104, 104, 104, 0.5);
+      user-select: none;
+    }
+
+    .content::before,
+    .content::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      border-radius: inherit;
+      background: conic-gradient(from var(--gradient-angle),
+          rgb(109, 186, 22),
+          rgb(30, 119, 95),
+          rgb(55, 141, 167),
+          rgb(59, 91, 174),
+          rgb(144, 118, 236),
+          rgb(59, 91, 174),
+          rgb(55, 141, 167),
+          rgb(30, 119, 95),
+          rgb(109, 186, 22));
+      animation: rotation 8s linear infinite;
+    }
+
+    .content::after {
+      filter: blur(30px);
+    }
+
+    @keyframes rotation {
+      0% {
+        --gradient-angle: 0deg;
+      }
+
+      100% {
+        --gradient-angle: 360deg;
+      }
+    }
+
+    .content img {
+      aspect-ratio: 3/2;
+      border-radius: 10px;
+      grid-row: 1 / 5;
+      margin-bottom: 20px;
+      user-select: none;
+      object-fit: cover;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .content h1 {
+      font-size: 1.2rem;
+      color: #fff;
+      text-align: center;
+      grid-row: 5 / 6;
+    }
+
+    .content p {
+      font-size: 1rem;
+      font-weight: 400;
+      color: #fff;
+      grid-row: 6 / 9;
+    }
+
+    .btn-grad {
+      background-image: linear-gradient(to right,
+          #ece9e6 0%,
+          #ffffff 51%,
+          #ece9e6 100%);
+      padding: 10px 16px;
+      color: #000;
+      box-shadow: 0 0 5px #eee;
+      outline: 0;
+      font-size: 1rem;
+      font-weight: 400;
+      grid-row: 9 / 10;
+      cursor: pointer;
+      transition: all 0.5s ease-in;
+    }
+
+    .btn-grad:is(:hover, :focus-visible) {
+      text-decoration: none;
+    }
+
+    .control {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      list-style: none;
+      gap: 14px;
+    }
+
+    .control li {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(to bottom, #559b9a, #3b3d8a);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5),
+        inset 0px 4px 4px rgba(255, 255, 255, 0.2);
+      padding: 16px;
+      border-radius: 50%;
+      cursor: pointer;
+      transform: scale(1);
+    }
+
+    .control li::before {
+      position: absolute;
+      content: "";
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background: linear-gradient(to right, #559b9a, #3b3d8a);
+      border-radius: 50%;
+      z-index: -1;
+      transition: all 0.5s ease-in;
+      opacity: 0;
+    }
+
+    .control li:hover::before {
+      opacity: 1;
+    }
+
+    .arrow {
+      font-size: 1.5rem;
+      color: #fff;
+    }
+
+    @media (max-width: 1215px) {
+      .description>p {
+        font-size: 1rem;
+      }
+
+      .btn {
+        font-size: 1rem;
+      }
+    }
+
+    @media (max-width: 1015px) {
+      .home {
+        grid-template-columns: 45% 50%;
+        gap: 50px;
+        padding: 140px 50px;
+      }
+
+      .description>p {
+        font-size: 1rem;
+      }
+
+      .btn {
+        padding: 8px 12px;
+      }
+
+      .btn-grad {
+        padding: 8px 12px;
+      }
+    }
+
+    @media (max-width: 865px) {
+      .home {
+        grid-template-columns: 45% 50%;
+        gap: 60px;
+        padding: 130px 70px;
+      }
+    }
+
+    @media (max-width: 815px) {
+      .home {
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 1fr;
+        grid-template-areas:
+          "userscolorcontainer"
+          "description";
+        gap: 30px;
+        padding: 90px 80px 70px;
+      }
+
+      .users-color-container {
+        grid-area: userscolorcontainer;
+      }
+
+      .description {
+        grid-area: description;
+        padding: 0;
+        text-align: center;
+      }
+
+      .description>p {
+        font-size: 1.1rem;
+      }
+
+      #form {
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 815px) {
+      .description>p {
+        font-size: 1rem;
+      }
+    }
+
+    @media (max-width: 460px) {
+      .home {
+        gap: 0;
+        padding: 30px 40px;
+      }
+
+      #form {
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+        margin-top: 20px;
+      }
+
+      input[type="email"]:focus {
+        outline-offset: 6px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="start">
+    <h1 id="opener">
+      <span>AGRO</span><span>SHOPS</span>
+    </h1>
+  </div>
+  <div class="gallery">
+    <img src="https://images.pexels.com/photos/2049001/pexels-photo-2049001.jpeg?auto=compress&cs=tinysrgb&w=600"
+      alt="">
+    <img src="https://images.pexels.com/photos/2131784/pexels-photo-2131784.jpeg?auto=compress&cs=tinysrgb&w=600"
+      alt="">
+    <img src="https://images.pexels.com/photos/235925/pexels-photo-235925.jpeg?auto=compress&cs=tinysrgb&w=600" alt="">
+    <img src="https://images.pexels.com/photos/2382904/pexels-photo-2382904.jpeg?auto=compress&cs=tinysrgb&w=600"
+      alt="">
+    <img src="https://images.pexels.com/photos/235731/pexels-photo-235731.jpeg?auto=compress&cs=tinysrgb&w=600" alt="">
+    <img src="https://images.pexels.com/photos/2804327/pexels-photo-2804327.jpeg?auto=compress&cs=tinysrgb&w=600"
+      alt="">
+  </div>
+  <section class="home">
+    <div class="description">
+      <h1 class="title">
+        <span class="gradient-text">Find Shops </span> with KrishiKonnect
+      </h1>
+      <p class="paragraph">
+        Explore Nearby Agroshops: Your Comprehensive Guide to Locating Agricultural Supply Stores in Your Vicinity
+      </p>
+      <form id="form" autocomplete="off">
+        <input type="email" id="email-id" name="email_address" aria-label="email adress" placeholder="" required
+          oninput="checkEmpty()" />
+        <button type="submit" class="btn" aria-label="submit">
+          <span>Subscribe</span>
+          <ion-icon name="arrow-forward-outline"></ion-icon>
+        </button>
+      </form>
+    </div>
+
+    <div class="users-color-container">
+      <span class="item" style="--i: 1"></span>
+      <img class="item"
+        src="https://th.bing.com/th/id/OIG4.Y5WbZ105LhYYgLdWO0uj?w=270&h=270&c=6&r=0&o=5&dpr=1.3&pid=ImgGn"
+        style="--i: 2" alt="" />
+      <span class="item" style="--i: 3"></span>
+      <img class="item"
+        src="https://th.bing.com/th/id/OIG2.ROMgRoTI6yw80U5r_KIn?w=270&h=270&c=6&r=0&o=5&dpr=1.3&pid=ImgGn"
+        style="--i: 4" alt="" />
+
+      <img class="item"
+        src="https://th.bing.com/th/id/OIG2.84AuF17zQvoJ9sGdgfoZ?w=270&h=270&c=6&r=0&o=5&dpr=1.3&pid=ImgGn"
+        style="--i: 10" alt="" />
+      <span class="item" style="--i: 11"></span>
+      <img class="item"
+        src="https://th.bing.com/th/id/OIG2.vOk9TYQ4wpRcfhulN0nt?w=270&h=270&c=6&r=0&o=5&dpr=1.3&pid=ImgGn"
+        style="--i: 12" alt="" />
+      <span class="item" style="--i: 5"></span>
+
+      <span class="item" style="--i: 9"></span>
+      <img class="item"
+        src="https://th.bing.com/th/id/OIG2.4pxQgNrlReGa8x9DoKEk?w=270&h=270&c=6&r=0&o=5&dpr=1.3&pid=ImgGn"
+        style="--i: 8" alt="" />
+      <span class="item" style="--i: 7"></span>
+      <img class="item"
+        src="https://th.bing.com/th/id/OIG4.DZMH2oDIQWcuJ7k7UEvL?w=270&h=270&c=6&r=0&o=5&dpr=1.3&pid=ImgGn"
+        style="--i: 6" alt="" />
+    </div>
+  </section>
+
+  
+  <div id="map" style="height: 400px;"></div>
+  <div id="info-card"></div>
+  <div class="cards">
+    <div class="card" style="width: 18rem;">
+      <img
+        src="https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=spj2ef-au7yZo95quCHHhg&cb_client=search.gws-prod.gps&w=408&h=240&yaw=245.41588&pitch=0&thumbfov=100"
+        class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="card-title">Agromission Technology India Limited</h5>
+        <p class="card-text">2nd Floor, CS-8, Gyan Khand 1, Indirapuram, Ghaziabad, Uttar Pradesh 201014 ,09560701950
+        </p>
+        <a href="https://maps.app.goo.gl/v5FP4MmDbK6Rsd53A" class="btn btn-primary">CHECK</a>
+      </div>
+    </div>
+    <div class="card" style="width: 18rem;">
+      <img
+        src="https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=gEjyZi5GQ-ZCJezaS6pDzA&cb_client=search.gws-prod.gps&w=408&h=240&yaw=281.0623&pitch=0&thumbfov=100"
+        class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="card-title">Agro-Commercial</h5>
+        <p class="card-text"> B-50, B Block, Sector 59, Noida, Uttar Pradesh 201301</p>
+        <a href="https://maps.app.goo.gl/UnikzVQoaHPLDuwt9" class="btn btn-primary">CHECK</a>
+      </div>
+    </div>
+    <div class="card" style="width: 18rem;">
+      <img
+        src="https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=7KjMwSZbMIqNqDsgLJvOfw&cb_client=search.gws-prod.gps&w=408&h=240&yaw=256.9303&pitch=0&thumbfov=100"
+        class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="card-title">SHREE BALAJI AGRO</h5>
+        <p class="card-text">B No. 41A, Block D, Shyam Park Extension, Naveen Park, Sahibabad, Ghaziabad, Uttar Pradesh
+          201005</p>
+        <a href="http://www.shreebalajiagros.tradeindia.com/" class="btn btn-primary">CHECK</a>
+      </div>
+    </div>
+    <div class="card" style="width: 18rem;">
+      <img
+        src="https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=gEjyZi5GQ-ZCJezaS6pDzA&cb_client=search.gws-prod.gps&w=408&h=240&yaw=281.0623&pitch=0&thumbfov=100"
+        class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="card-title">Agro-Commercial</h5>
+        <p class="card-text">B-50, B Block, Sector 59, Noida, Uttar Pradesh 201301. , 09873262200</p>
+        <a href="http://www.agrocom.in/" class="btn btn-primary">CHECK</a>
+      </div>
+    </div>
+
+
+  </div>
+</body>
+
+<style>
+  .your-new-class {
+
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: 500;
+    color: brown;
+    filter: drop-shadow(0 0 60px rgb(124, 185, 24));
+
+  }
+
+  body {
+    background: linear-gradient(to right, #95c11e, #dfe4df, #a2ab8a);
+    display: flex;
+    flex-direction: column;
+  }
+
+  @font-face {
+    font-family: Orphan;
+    src: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/4273/orphan_2.woff") format("woff");
+    font-weight: normal;
+    font-weight: 100;
+    font-style: normal;
+  }
+
+  @keyframes scroller {
+    80% {
+      text-indent: 5%;
+    }
+
+    100% {
+      text-indent: 5%;
+    }
+  }
+
+  @keyframes fader {
+    to {
+      opacity: 0;
+    }
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  .start {
+    font-family: Orphan, Futura Light, Futura, sans-serif;
+    font-size: 4.8vw;
+    /* so that the text scales to browser window */
+    min-height: 100%;
+  }
+
+  body {
+    margin: 0;
+    height: 100%;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    /* basic centering of content with flexbox */
+  }
+
+  h1 {
+    width: 95%;
+    overflow: hidden;
+    text-transform: uppercase;
+    /* just in case someone forgets to turn on CAPS */
+  }
+
+  h1 span {
+    display: inline-block;
+    width: 50%;
+    overflow: hidden;
+    line-height: 2;
+    animation: scroller 2s 1.5s 2 forwards, fader 1s 3s;
+    /* initiates the "scroller" animation twice, each time for four seconds, with a 1 second pause beforehand. The "fader" animation takes place just once, over 1 second, with a five second pause beforehand */
+  }
+
+  h1 span:first-child {
+    text-indent: 100%;
+    /* disappers text in the first (overflow: hidden) span by pushing it all the way to the right. Curiously, Webkit works with a value of 50%, but Firefox needs 100%; */
+    border-right: 0.5vw solid #000;
+  }
+
+  h1 span:last-child {
+    text-indent: -100%;
+    /* the opposite indent value for text in the right <span> element */
+    border-left: 0.5vw solid #000;
+  }
+
+  h1 span.closer:first-child {
+    width: 20%;
+    /* shifted due to character length in the second part of the animation: this could also be automated by JavaScript counting the number of chars in each span and dividing the space appropriately */
+  }
+
+  h1 span.closer:last-child {
+    width: 80%;
+  }
+</style>
+
+</html>
