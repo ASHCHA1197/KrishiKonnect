@@ -216,6 +216,16 @@ app.get('/krishiKonnect/agroStore', (req,res)=>{
     res.render('agroStore/index');
 })
 
+app.post('/krishiKonnect/agroStore', wrapAsync(async(req,res)=>{
+    const {city} = req.body;
+    const s = await Store.findOne({city});
+    if(!s){
+        req.flash("success","Sorry no agrostores available near your area!!");
+        return res.redirect("/krishiKonnect/agroStore");
+    }
+    res.render('agroStore/view', {Stores : s.stores});
+}));
+
 
 
 app.get('/krishiKonnect/profile', wrapAsync(async (req,res)=>{

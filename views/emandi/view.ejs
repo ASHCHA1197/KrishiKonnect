@@ -1,14 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
+<!DOCTYPE html>
+<html style="background:linear-gradient(to right, #a2ab8a, #dfe4df, #95c11e);">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Display prices</title>
+    <title> E-Mandi Data </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center; /* Added to center vertically */
+            height: 100vh; /* Added to make the page full height */
+        }
+        #form {
+            background: rgba(255, 255, 255, 0.7);
+            width: 450px;
+            max-width: 95%;
+            margin: auto;
+            border-radius: 25px;
+            margin-top: 10%;
+            padding: 20px; /* Added padding for better spacing */
+        }
+        #form input, #form textarea, select {
+            display: block;
+            margin: 15px;
+            font-size: 18px;
+            padding: 10px;
+            width: calc(100% - 50px);
+            background: transparent;
+            border: 1px solid #aaa;
+            border-bottom: 2px solid #888;
+            transition: all 0.4s;
+            outline: none;
+        }
+        #form textarea {
+            resize: none;
+            height: 100px;
+        }       
+        #form input:focus, #form textarea:focus {
+            background: #fff;
+            border-color: transparent;
+            border-bottom-color: #E91E63;
+            box-shadow: 2px 2px 5px 0px #9c8e8e;
+        }
+        #form button {
+            display: block;
+            margin: 15px;
+            padding: 10px;
+            width: calc(100% - 25px);
+            cursor: pointer;
+            font-size: 20px;
+            background: linear-gradient(135deg, transparent 0%,transparent 100%);
+            border: 3px solid #bf3265;
+            outline: none;
+            transition: all 0.4s;
+            color: #622774;
+            line-height: 24px;
+        }
+        #form button:hover, #form button:focus {
+            background: linear-gradient(135deg, #622774 0%,#c53364 100%);
+            color: #fff;    
+            letter-spacing: 4px;
+            font-size: 22px;
+        }
+        h1 {
+            font-family: "Rockwell", serif;
+            text-align: center;
+            color: #023020;
+        }
+    </style>
+    <link rel="stylesheet" href="fonts.css">
 </head>
 <body>
     <div id="one">
-        <h3><%=market%> <%= crop.name %> <%= crop.price %></h3>
+        <h3> </h3>
+    </div>
+    
+    <div id="form">
+        <form action="/krishiKonnect/eMandi" method="GET">
+
+        
+        <h1>E-Mandi</h1> <!-- Moved heading inside the form -->
+        <br>
+       <h3> Market Name  </h3>  <h2> <%=market%> </h2>
+       
+       <h3> Crop Name </h3><h2> <%= crop.name %> </h2>
+    <h3> Crop Price  </h3> <h2><%= crop.price %> </h2> 
+    
+    <button class="cabin">GO BACK</button>
+</form>
+        <br>
     </div>
 </body>
 </html>

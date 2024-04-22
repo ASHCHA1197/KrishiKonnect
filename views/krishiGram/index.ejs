@@ -63,20 +63,47 @@
             height: auto;
             border-radius: 5px; /* Rounded corners for images */
         }
+        .maindiv{
+            display:flex;
+            flex-direction: column;
+            
+        }
+        .conatiner{
+            padding:10%;;
+            margin:20%;
+        }
+        body{
+            display:flex;
+            justify-content:center;
+            background: linear-gradient(to right, #a2ab8a, #dfe4df, #95c11e);
+        }
+       .conatiner h5{
+        font-family: "Rockwell", serif;
+            text-align: center;
+           
+        }
+       .conatiner h2{
+        font-family: "Rockwell", serif;
+            text-align: center;
+        }
+        
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>LET FARMERS HAVE SOME FUN</h1>
-
-        <h3><a href="/krishiKonnect/krishiGram/new">Create new post</a></h3>
-        <% for(let p of posts){ %>
-            <div class="post">
-                <h5><%=p.name%></h5>
-                <h2><a href="/krishiKonnect/krishiGram/<%=p._id%>"><%=p.title%></a></h2>
-                <img src="<%=p.media%>" alt="">
-            </div>
-        <% } %>
+    <div class="maindiv">
+        <div class="container">
+            <h1>LET FARMERS HAVE SOME FUN</h1>
+    
+            <h3><a href="/krishiKonnect/krishiGram/new">Create new post</a></h3>
+            <% for(let p of posts){ %>
+                <div class="post">
+                    <h5><%=p.name%></h5>
+                    <h2><a href="/krishiKonnect/krishiGram/<%=p._id%>"  target = "_blank"><%=p.title%></a></h2>
+                    <img src="<%=p.media%>" alt="">
+                </div>
+            <% } %>
+        </div>
     </div>
+   
 </body>
 </html>
